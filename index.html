@@ -46,7 +46,7 @@
 
           $.ajax({
             type: "GET",
-            url: "data/path.geojson",
+            url: "data/path84.geojson",
             dataType: "json",
             success: function (response) {
                 var path = L.geoJson(response).addTo(map);
@@ -56,7 +56,7 @@
 
             $.ajax({
             type: "GET",
-            url: "data/points.geojson",
+            url: "data/points84.geojson",
             dataType: "json",
             success: function (response) {
                 var points= L.geoJson(response).addTo(map);
