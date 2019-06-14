@@ -51,7 +51,7 @@
            }
          });
 
-        var paths= $.ajax({
+        var path= $.ajax({
              url:"data/path.geojson",
               dataType: "json",
               success: console.log("Path loaded"),
@@ -59,6 +59,11 @@
                 alert(xhr.statusText)
              }
            });
+
+//Add to map
+      L.geoJSON(path).addTo(map);
+      L.geoJSON(points).addTo(map);
+
 
     </script>
 </body>
