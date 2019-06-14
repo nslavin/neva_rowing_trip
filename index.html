@@ -43,26 +43,26 @@
 
 
   //      Load data
+        var path = L.geoJson('data/ath.geojson').addTo(map);
+          // $.ajax({
+          //   type: "GET",
+          //   url: "data/path.geojson",
+          //   dataType: "json",
+          //   success: function (response) {
+          //       var path = L.geoJson(response).addTo(map);
+          //       console.log(path)
+          //       // map.fitBounds(path.getBounds())
+          //   } });
 
-          $.ajax({
-            type: "GET",
-            url: "data/path.geojson",
-            dataType: "json",
-            success: function (response) {
-                var path = L.geoJson(response).addTo(map);
-                console.log(path)
-                // map.fitBounds(path.getBounds())
-            } });
-
-            $.ajax({
-            type: "GET",
-            url: "data/points84.geojson",
-            dataType: "json",
-            success: function (response) {
-                var points= geoJson(response)
-                console.log(points)
-            map.fitBounds(path.getBounds())
-            } });
+            // $.ajax({
+            // type: "GET",
+            // url: "data/points84.geojson",
+            // dataType: "json",
+            // success: function (response) {
+            //     var points= geoJson(response)
+            //     console.log(points)
+            // map.fitBounds(path.getBounds())
+            // } });
 
 
 
