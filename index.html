@@ -42,16 +42,8 @@
         }).addTo(map);
 
   //      Load data
-        var points= $.ajax({
-           url:"data/points.geojson",
-           dataType: "json",
-           success: console.log("Points loaded"),
-           error: function (xhr) {
-             alert(xhr.statusText)
-           }
-         });
 
-         $.ajax({
+          $.ajax({
             type: "GET",
             url: "geodata/path.geojson",
             dataType: "json",
@@ -60,7 +52,7 @@
                 map.fitBounds(path.getBounds())
             } });
 
-    
+
 
 
 
