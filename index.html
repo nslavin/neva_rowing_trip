@@ -12,6 +12,8 @@
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <!-- Moving marker -->
+    <script type="text/javascript" src="MovingMarker.js"></script>
 
     <style>
         body {
@@ -43,30 +45,58 @@
 
 
   //      Load data
-        var path = L.geoJson('data/ath.geojson').addTo(map);
-          // $.ajax({
-          //   type: "GET",
-          //   url: "data/path.geojson",
-          //   dataType: "json",
-          //   success: function (response) {
-          //       var path = L.geoJson(response).addTo(map);
-          //       console.log(path)
-          //       // map.fitBounds(path.getBounds())
-          //   } });
+var data={points:{},path:{}};
+
+//array for paths
+var coords=[]
+          $.ajax({
+            type: "GET",
+            url: "data/path.geojson",
+            dataType: "json",
+            success: function (response) {
+                data.path = L.geoJson(response,{
+                  onEachFeature: function(feature, layer) {
+                  console.log('hey')
+                  coords.push(layer.feature.geometry.coordinates);
+                }  }
+  ).addTo(map);
+
+//swiping coordinates
+  coords.forEach(function(entry) {
+      entry.forEach(function(item) {
+      var old =item[0];
+      item[0]=item[1];
+      item[1]=old});
+});
+
+            } });
+
+
 
             // $.ajax({
             // type: "GET",
             // url: "data/points84.geojson",
             // dataType: "json",
             // success: function (response) {
-            //     var points= geoJson(response)
-            //     console.log(points)
-            // map.fitBounds(path.getBounds())
+            //     data.points= L.geoJson(response,{
+            //       onEachFeature: function(feature, layer) {
+            //       console.log('hey')
+            //
+            //     }  });
+            //     console.log('points');
+            // map.fitBounds(data.path.getBounds())
             // } });
 
 
+// MovingMarker
+var line =[];
+line.push([59.97474057373848,30.277994722334196 ])
+line.push([ 59.96866901128213,30.290656050574988])
+var myMovingMarker = L.Marker.movingMarker(line,[20000]).addTo(map);
+var myMovingMarker = L.Marker.movingMarker(coords[0],[20000]).addTo(map);
 
 
+myMovingMarker.start();
 
 
     </script>
