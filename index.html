@@ -50,7 +50,7 @@
             dataType: "json",
             success: function (response) {
                 var path = L.geoJson(response).addTo(map);
-                console.log('path')
+                console.log(path)
                 // map.fitBounds(path.getBounds())
             } });
 
@@ -59,8 +59,8 @@
             url: "data/points84.geojson",
             dataType: "json",
             success: function (response) {
-                var points= L.geoJson(response).addTo(map);
-                console.log('points')
+                var points= geoJson(response)
+                console.log(points)
                 // map.fitBounds(path.getBounds())
             } });
 
