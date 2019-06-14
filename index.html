@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=dc914d569c8e49dca90fe311a0be06fd
-    <title>Starter map</title>
+    <meta charset="utf-8" />
+    <title>Neva timelapse</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-     <!-- Leaflet -->
+
+    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 
     <style>
         body {
@@ -40,7 +41,7 @@
             maxZoom: 19
         }).addTo(map);
 
-        //Load data
+  //      Load data
         var points= $.ajax({
            url:"data/points.geojson",
            dataType: "json",
@@ -48,14 +49,17 @@
            error: function (xhr) {
              alert(xhr.statusText)
            }
+         });
+
         var paths= $.ajax({
              url:"data/path.geojson",
               dataType: "json",
-              success: console.log("Points loaded"),
+              success: console.log("Paths loaded"),
               error: function (xhr) {
                 alert(xhr.statusText)
-              }
-           
+             }
+           });
+
     </script>
 </body>
 
