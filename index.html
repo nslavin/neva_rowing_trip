@@ -45,7 +45,7 @@
 
           $.ajax({
             type: "GET",
-            url: "geodata/path.geojson",
+            url: "data/path.geojson",
             dataType: "json",
             success: function (response) {
                 var path = L.geoJson(response).addTo(map);
