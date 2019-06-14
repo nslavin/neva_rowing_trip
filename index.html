@@ -43,7 +43,7 @@
 
   //      Load data
         var points= $.ajax({
-           url:"https://github.com/nslavin/neva_rowing_trip/blob/master/data/points.geojson",
+           url:"/data/points.geojson",
            dataType: "json",
            success: console.log("Points loaded"),
            error: function (xhr) {
@@ -52,7 +52,7 @@
          });
 
         var paths= $.ajax({
-             url:"https://github.com/nslavin/neva_rowing_trip/blob/master/data/path.geojson",
+             url:"/data/path.geojson",
               dataType: "json",
               success: console.log("Path loaded"),
               error: function (xhr) {
