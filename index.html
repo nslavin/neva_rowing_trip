@@ -51,18 +51,18 @@
            }
          });
 
-        var path= $.ajax({
-             url:"data/path.geojson",
-              dataType: "json",
-              success: console.log("Path loaded"),
-              error: function (xhr) {
-                alert(xhr.statusText)
-             }
-           });
+         $.ajax({
+            type: "GET",
+            url: "geodata/path.geojson",
+            dataType: "json",
+            success: function (response) {
+                var path = L.geoJson(response).addTo(map);
+                map.fitBounds(path.getBounds())
+            } });
 
-//Add to map
-      L.geoJSON((path.responseJSON)).addTo(map);
-      L.geoJSON(points.responseJSON).addTo(map);
+    
+
+
 
 
     </script>
