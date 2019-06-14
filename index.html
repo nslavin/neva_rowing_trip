@@ -43,14 +43,24 @@
 
 
   //      Load data
-          var path={}
+
           $.ajax({
             type: "GET",
             url: "data/path.geojson",
             dataType: "json",
             success: function (response) {
-                path = L.geoJson(response).addTo(map);
+                var path = L.geoJson(response).addTo(map);
                 console.log('path')
+                // map.fitBounds(path.getBounds())
+            } });
+
+            $.ajax({
+            type: "GET",
+            url: "data/points.geojson",
+            dataType: "json",
+            success: function (response) {
+                var points= L.geoJson(response).addTo(map);
+                console.log('points')
                 // map.fitBounds(path.getBounds())
             } });
 
