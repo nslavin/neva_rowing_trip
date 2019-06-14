@@ -5,7 +5,13 @@
     <meta charset="utf-8" />https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=dc914d569c8e49dca90fe311a0be06fd
     <title>Starter map</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    
     <style>
         body {
             margin: 0;
@@ -22,7 +28,7 @@
 
 <body>
     <div id="map"></div>
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    
     <script>
         var map = L.map('map')
             .setView([59.855668, 30.492981], 11);
@@ -31,6 +37,8 @@
             subdomains: 'abcd',
             maxZoom: 19
         }).addTo(map);
+        
+        
     </script>
 </body>
 
