@@ -61,8 +61,8 @@
            });
 
 //Add to map
-      L.geoJSON(path).addTo(map);
-      L.geoJSON(points).addTo(map);
+      L.geoJSON((path.responseJSON)).addTo(map);
+      L.geoJSON(points.responseJSON).addTo(map);
 
 
     </script>
