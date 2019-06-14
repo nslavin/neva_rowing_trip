@@ -41,14 +41,15 @@
             maxZoom: 19
         }).addTo(map);
 
-  //      Load data
 
+  //      Load data
+          var path={}
           $.ajax({
             type: "GET",
             url: "data/path.geojson",
             dataType: "json",
             success: function (response) {
-                var path = L.geoJson(response).addTo(map);
+                path = L.geoJson(response).addTo(map);
                 map.fitBounds(path.getBounds())
             } });
 
