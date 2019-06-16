@@ -17,7 +17,7 @@ html, body {
     margin: 0;
     padding: 0;
     color: black;
-
+    flex: 1 1 50%;
 
 }
 
@@ -40,7 +40,7 @@ body {
 }
 
 .content {
-    flex: 1;
+    flex: 1 1 50%;
 }
 
 aside {
