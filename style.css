@@ -45,7 +45,7 @@ body {
 
 aside {
 
-    flex: 0 1 50%;
+    flex: 1 1 50%;
     overflow: scroll;
     padding: 0 0 0 0;
     box-sizing: border-box;
