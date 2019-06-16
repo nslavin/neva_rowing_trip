@@ -92,19 +92,7 @@ var time;
   ).addTo(map);
   map.fitBounds(all.getBounds());
   } });
-
-
-
-
-
 var myMovingMarker = L.Marker.movingMarker(path.coords[0],20000);
-
-
-
-
-
-
-
 //onYouTubeIframeAPIReady
 var player = null;
 function onYouTubeIframeAPIReady() {
@@ -115,6 +103,9 @@ function onYouTubeIframeAPIReady() {
     }
   });
 }
+
+
+//calculating paths and times
 function make_animation(time) {
 
 var a_path={coords:[],time:[]};
@@ -147,14 +138,12 @@ var a_path={coords:[],time:[]};
         console.log(sliced);
         layer_s=L.GeoJSON.geometryToLayer(sliced)
         a_path.coords.push(layer_s._latlngs);
-
-            a_path.time.push(path.t_f[i]-time);
-
+        a_path.time.push(path.t_f[i]-time);
 
         if (i<Object.keys(path.t_st).length){
-       for (j = i+1; j < Object.keys(path.t_st).length; j++) {
-        a_path.coords.push(path.coords[j]);
-         a_path.time.push(parseInt(path.t_length[j]));
+          for (j = i+1; j < Object.keys(path.t_st).length; j++) {
+              a_path.coords.push(path.coords[j]);
+              a_path.time.push(parseInt(path.t_length[j]));
 
        }}
        console.log(a_path);
@@ -162,20 +151,19 @@ var a_path={coords:[],time:[]};
 };
 };
 
- console.log(a_path.coords.length);
+//console.log(a_path.coords.length);
 
 return (a_path);
 
 }
 
 
+// recursive animated marker
 function way(a_path,i)
 {
   console.log("marker+1")
   myMovingMarker=L.Marker.movingMarker(a_path.coords[i],a_path.time[i]*1000).addTo(map);
   myMovingMarker.start();
-
-
 
   myMovingMarker.on('end', function() {
     map.removeLayer(myMovingMarker);
@@ -190,7 +178,7 @@ function way(a_path,i)
 
 // this is called once the player is set up
 function onPlayerReady(event) {
-// start animation
+
 
 }
 
