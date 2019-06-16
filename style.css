@@ -13,14 +13,6 @@ html, body {
 
 
 
- aside {
-    margin: 0;
-    padding: 0;
-    color: black;
-    flex: 1 1 50%;
-
-}
-
 body {
     background: black;
 }
@@ -83,6 +75,7 @@ body .html5-video-player {
 @media screen and (max-width: 640px){
     .flex-container {
         flex-direction: column;
+        flex: 1 1 50%;
 
     }
 
