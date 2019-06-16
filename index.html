@@ -14,25 +14,43 @@
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <!-- Moving marker -->
     <script type="text/javascript" src="MovingMarker.js"></script>
+    <!-- YT API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
+    <!--TURF -->
+    <!-- <script src='outTurf.js'></script> -->
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+
+    <link rel="stylesheet" href="style.css" type="text/css">
 
 <body>
-    <div id="map"></div>
 
-    <script>
+  <div class="content-wrapper">
+          <!-- Header -->
+
+            <div class="flex-container">
+              <!-- Content -->
+              <section class="content">
+                  <div id="map"></div>
+              </section>
+
+              <!-- Sidebar -->
+              <aside>
+                    <div class="iframe-container">
+                     <div class="player">
+                     <iframe  id="player" src="https://www.youtube.com/embed/_5WasqemEP0?autoplay=1&enablejsapi=1&controls=1&showinfo=0&modestbranding=1&fs=0&rel=0" frameborder="0"  autoplay="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" ></iframe>
+                      </div>
+                      </div>
+
+
+              </aside>
+          </div>
+      </div>
+
+
+
+<script>
 
         // map
         var map = L.map('map')
@@ -45,61 +63,165 @@
 
 
   //      Load data
-var data={points:{},path:{}};
+var path={coords:{},t_st:{},t_f:{},t_length:{},length:{},feature:{} };
+var time;
 
-//array for paths
-var coords=[]
+//Importing data from GeoJSON
+
           $.ajax({
             type: "GET",
-            url: "data/path.geojson",
+            url: "data/path_attr.geojson",
             dataType: "json",
+            async: false,
             success: function (response) {
-                data.path = L.geoJson(response,{
+                  all=L.geoJson(response,{
                   onEachFeature: function(feature, layer) {
-                  console.log('hey')
-                  coords.push(layer.feature.geometry.coordinates);
-                }  }
-  ).addTo(map);
 
-//swiping coordinates
-  coords.forEach(function(entry) {
-      entry.forEach(function(item) {
-      var old =item[0];
-      item[0]=item[1];
-      item[1]=old});
+                  var id=feature.properties.ID;
+                  path.t_st[id]=feature.properties.t_st;
+                  path.t_f[id]=feature.properties.t_f;
+                  path.t_length[id]=feature.properties.t_length;
+                  path.length[id]=feature.properties.length;
+                  path.coords[id]=layer._latlngs;
+                  path.feature[id]=feature
+                }
+              }
+
+
+
+  ).addTo(map);
+  map.fitBounds(all.getBounds());
+  } });
+
+
+
+
+
+var myMovingMarker = L.Marker.movingMarker(path.coords[0],20000);
+
+
+
+
+
+
+
+//onYouTubeIframeAPIReady
+var player = null;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+function make_animation(time) {
+
+var a_path={coords:[],time:[]};
+// comparing time to our state
+
+  for (i = 0; i < Object.keys(path.t_st).length; i++) {
+    console.log('cheking');
+// paused on point
+    if (time==path.t_st[i]){
+      console.log('match');
+  if (i<Object.keys(path.t_st).length){
+
+       for (j = i; j < Object.keys(path.t_st).length; j++) {
+        a_path.coords.push(path.coords[j]);
+        a_path.time.push(path.t_length[j]);
+
+      }}
+        break;
+      };
+
+
+// paused on random position
+    if (time>path.t_st[i] && time<path.t_f[i]){
+      var start=(path.length[i]/path.t_length[i])*(time-path.t_st[i])/1000;
+        console.log('start at '+start);
+
+
+
+        var sliced = turf.lineSliceAlong(path.feature[i], start, path.length[i]/1000);
+        console.log(sliced);
+        layer_s=L.GeoJSON.geometryToLayer(sliced)
+        a_path.coords.push(layer_s._latlngs);
+
+            a_path.time.push(path.t_f[i]-time);
+
+
+        if (i<Object.keys(path.t_st).length){
+       for (j = i+1; j < Object.keys(path.t_st).length; j++) {
+        a_path.coords.push(path.coords[j]);
+         a_path.time.push(parseInt(path.t_length[j]));
+
+       }}
+       console.log(a_path);
+        break;
+};
+};
+
+ console.log(a_path.coords.length);
+
+return (a_path);
+
+}
+
+
+function way(a_path,i)
+{
+  console.log("marker+1")
+  myMovingMarker=L.Marker.movingMarker(a_path.coords[i],a_path.time[i]*1000).addTo(map);
+  myMovingMarker.start();
+
+
+
+  myMovingMarker.on('end', function() {
+    map.removeLayer(myMovingMarker);
+    i++;
+    console.log("marker+2")
+    way(a_path,i);
 });
 
-            } });
+
+}
+
+
+// this is called once the player is set up
+function onPlayerReady(event) {
+// start animation
+
+}
+
+// this function is called every time the players state changes
+function onPlayerStateChange(event) {
+
+    if (event.data == YT.PlayerState.PLAYING) {
+        map.removeLayer(myMovingMarker);
+        console.log("playing "+player.getCurrentTime());
+        c_path=make_animation(player.getCurrentTime());
+        way(c_path,0);
+
+      }
+
+    if (event.data == YT.PlayerState.PAUSED) {
+        console.log("paused "+player.getCurrentTime());
+        myMovingMarker.pause();
+        time=player.getCurrentTime()
+    }}
 
 
 
-            // $.ajax({
-            // type: "GET",
-            // url: "data/points84.geojson",
-            // dataType: "json",
-            // success: function (response) {
-            //     data.points= L.geoJson(response,{
-            //       onEachFeature: function(feature, layer) {
-            //       console.log('hey')
-            //
-            //     }  });
-            //     console.log('points');
-            // map.fitBounds(data.path.getBounds())
-            // } });
 
 
-// MovingMarker
-var line =[];
-line.push([59.97474057373848,30.277994722334196 ])
-line.push([ 59.96866901128213,30.290656050574988])
-var myMovingMarker = L.Marker.movingMarker(line,[20000]).addTo(map);
-var myMovingMarker = L.Marker.movingMarker(coords[0],[20000]).addTo(map);
 
-
-myMovingMarker.start();
 
 
     </script>
+
+
+
 </body>
 
 </html>

@@ -1,0 +1,92 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
+
+
+
+ aside {
+    margin: 0;
+    padding: 0;
+    color: black;
+
+
+}
+
+body {
+    background: black;
+}
+
+
+
+.content-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-container {
+    flex-grow: 1;
+    display: flex;
+    min-height: 0;
+}
+
+.content {
+    flex: 1;
+}
+
+aside {
+
+    flex: 0 1 50%;
+    overflow: scroll;
+    padding: 0 0 0 0;
+    box-sizing: border-box;
+
+
+}
+
+body .html5-video-player {
+  background-color: #fff;
+
+}
+
+.iframe-container {
+  overflow: hidden;
+  padding-top: 100%;
+
+  position: relative;
+  
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+.iframe-container iframe {
+   border: 0;
+   height: 100%;
+   left: 0;
+   position: absolute;
+   top: 0;
+  width: 100%;
+
+
+}
+
+@media screen and (max-width: 640px){
+    .flex-container {
+        flex-direction: column;
+
+    }
+
+
+
+
+}
